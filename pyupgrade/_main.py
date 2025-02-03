@@ -5,8 +5,8 @@ import ast
 import re
 import sys
 import tokenize
-from typing import Match
-from typing import Sequence
+from collections.abc import Sequence
+from re import Match
 
 from tokenize_rt import NON_CODING_TOKENS
 from tokenize_rt import parse_string_literal
@@ -380,6 +380,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         '--py312-plus',
         action='store_const', dest='min_version', const=(3, 12),
+    )
+    parser.add_argument(
+        '--py313-plus',
+        action='store_const', dest='min_version', const=(3, 13),
     )
     args = parser.parse_args(argv)
 

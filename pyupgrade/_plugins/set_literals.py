@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import ast
 import functools
-from typing import Iterable
+from collections.abc import Iterable
 
 from tokenize_rt import Offset
 from tokenize_rt import Token
@@ -50,6 +50,7 @@ def visit_Call(
         parent: ast.AST,
 ) -> Iterable[tuple[Offset, TokenFunc]]:
     if (
+            not isinstance(parent, ast.FormattedValue) and
             isinstance(node.func, ast.Name) and
             node.func.id == 'set' and
             len(node.args) == 1 and

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import ast
 import keyword
+from collections.abc import Sequence
 from typing import NamedTuple
-from typing import Sequence
 
 from tokenize_rt import NON_CODING_TOKENS
 from tokenize_rt import Token
@@ -46,6 +46,20 @@ def find_name(tokens: list[Token], i: int, src: str) -> int:
 
 def find_op(tokens: list[Token], i: int, src: str) -> int:
     return _find_token(tokens, i, 'OP', src)
+
+
+def find_call(tokens: list[Token], i: int) -> int:
+    depth = 0
+    while depth or not tokens[i].matches(name='OP', src='('):
+        if is_open(tokens[i]):  # pragma: >3.12 cover
+            depth += 1
+        elif is_close(tokens[i]):
+            # why max(...)? --
+            # ("something").method(...)
+            #  ^--start   target--^
+            depth = max(depth - 1, 0)
+        i += 1
+    return i
 
 
 def find_end(tokens: list[Token], i: int) -> int:

@@ -3,12 +3,11 @@ from __future__ import annotations
 import ast
 import functools
 import re
-from typing import Generator
-from typing import Iterable
-from typing import Match
+from collections.abc import Generator
+from collections.abc import Iterable
+from re import Match
+from re import Pattern
 from typing import Optional
-from typing import Pattern
-from typing import Tuple
 
 from tokenize_rt import Offset
 from tokenize_rt import Token
@@ -23,14 +22,14 @@ from pyupgrade._token_helpers import KEYWORDS
 from pyupgrade._token_helpers import remove_brace
 from pyupgrade._token_helpers import victims
 
-PercentFormatPart = Tuple[
+PercentFormatPart = tuple[
     Optional[str],
     Optional[str],
     Optional[str],
     Optional[str],
     str,
 ]
-PercentFormat = Tuple[str, Optional[PercentFormatPart]]
+PercentFormat = tuple[str, Optional[PercentFormatPart]]
 
 MAPPING_KEY_RE = re.compile(r'\(([^()]*)\)')
 CONVERSION_FLAG_RE = re.compile('[#0+ -]*')
@@ -46,7 +45,7 @@ def _must_match(regex: Pattern[str], string: str, pos: int) -> Match[str]:
 
 
 def _parse_percent_format(s: str) -> tuple[PercentFormat, ...]:
-    def _parse_inner() -> Generator[PercentFormat, None, None]:
+    def _parse_inner() -> Generator[PercentFormat]:
         string_start = 0
         string_end = 0
         in_fmt = False

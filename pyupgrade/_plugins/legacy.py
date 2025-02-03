@@ -4,9 +4,9 @@ import ast
 import collections
 import contextlib
 import functools
+from collections.abc import Generator
+from collections.abc import Iterable
 from typing import Any
-from typing import Generator
-from typing import Iterable
 
 from tokenize_rt import Offset
 from tokenize_rt import Token
@@ -91,7 +91,7 @@ class Visitor(ast.NodeVisitor):
         self.yield_offsets: set[Offset] = set()
 
     @contextlib.contextmanager
-    def _scope(self, node: ast.AST) -> Generator[None, None, None]:
+    def _scope(self, node: ast.AST) -> Generator[None]:
         self._scopes.append(Scope(node))
         try:
             yield

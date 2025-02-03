@@ -21,7 +21,7 @@ Sample `.pre-commit-config.yaml`:
 
 ```yaml
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v3.16.0
+    rev: v3.19.1
     hooks:
     -   id: pyupgrade
 ```
@@ -754,6 +754,24 @@ Availability:
      ...
 ```
 
+### pep 696 TypeVar defaults
+
+Availability:
+- File imports `from __future__ import annotations`
+    - Unless `--keep-runtime-typing` is passed on the commandline.
+- `--py313-plus` is passed on the commandline.
+
+```diff
+-def f() -> Generator[int, None, None]:
++def f() -> Generator[int]:
+     yield 1
+```
+
+```diff
+-async def f() -> AsyncGenerator[int, None]:
++async def f() -> AsyncGenerator[int]:
+     yield 1
+```
 
 ### remove quoted annotations
 
